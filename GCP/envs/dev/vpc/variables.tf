@@ -2,10 +2,7 @@ variable "project_id" {
   description = "Project name where the resource will be created."
   type        = string
 }
-variable "credentials_file_path" {
-  description = "Path to your credentials file."
-  type        = string
-}
+
 variable "region" {
   description = "Region where by default your resource will be created."
   type        = string
@@ -16,58 +13,31 @@ variable "main_zone" {
 }
 
 #============================= SUBNETWORKS VARIABLES ===================================
-
-#--------------------------------- PRESENTATION ----------------------------------------
-variable "presentation_ip_range" {
-  description = "IP range of Presentation subnetwork"
-  type        = string
-  default     = "10.100.0.0/16"
+variable "subnets" {
+  type = list(map(string))
 }
-
-#--------------------------------- APPLICATION -----------------------------------------
-variable "application_ip_range" {
-  description = "IP range of Application subnetwork"
-  type        = string
-  default     = "10.101.0.0/16"
-}
-#----------------------------------- DATABASE ------------------------------------------
-variable "database_ip_range" {
-  description = "IP range of Database subnetwork"
-  type        = string
-  default     = "10.102.0.0/16"
-}
-
-
-#================================== ROUTES VARIABLE ====================================
-variable "igw_destination" {
-  description = "The destination range of outgoing packets that this route applies to. Only IPv4 is supported"
-  type        = string
-  default     = "0.0.0.0/0"
-}
-
-
-
 
 #============================ FIREWALL RULES VARIABLES =================================
-
-#------------------------------ PRESENTATION FIREWALL ----------------------------------
-variable "presentation_firewall_ranges" {
-  description = "If direction <INGRESS> are specified, the firewall will apply only to traffic that has source IP address in these ranges. If direction <EGRESS>  are specified, the firewall will apply only to traffic that has destination IP address in these ranges."
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
+variable "firewall_rules" {
+  description = "List of custom rule definitions (refer to variables file for syntax)."
+  default     = []
+  type = list(object({
+    name        = string
+    direction   = string
+    ranges      = list(string)
+    source_tags = list(string)
+    target_tags = list(string)
+    allow = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+    deny = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+  }))
 }
+#========================== ROUTERS ==================================
+variable "routes" {
 
-#------------------------------ APPLICATION FIREWALL -----------------------------------
-variable "application_firewall_ranges" {
-  description = "If direction <INGRESS> are specified, the firewall will apply only to traffic that has source IP address in these ranges. If direction <EGRESS>  are specified, the firewall will apply only to traffic that has destination IP address in these ranges."
-  type        = list(string)
-  default     = ["10.100.0.0/16"]
-}
-
-
-#------------------------------ DATABASE FIREWALL --------------------------------------
-variable "database_firewall_ranges" {
-  description = "If direction <INGRESS> are specified, the firewall will apply only to traffic that has source IP address in these ranges. If direction <EGRESS>  are specified, the firewall will apply only to traffic that has destination IP address in these ranges."
-  type        = list(string)
-  default     = ["10.101.0.0/16"]
 }

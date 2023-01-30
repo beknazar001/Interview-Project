@@ -83,3 +83,7 @@ variable "firewall_rules" {
 variable "nat_subnet_name" {
   type = string
 }
+
+variable "nat_name" {
+  description = "the name for nat"
+}

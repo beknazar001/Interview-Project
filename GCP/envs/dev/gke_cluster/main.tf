@@ -1,27 +1,3 @@
-terraform {
-  required_version = ">= 1.3.7"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 3.90, < 5.0"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.53, < 5.0"
-    }
-  }
-}
-
-provider "google" {
-  project     = var.gcp_project_id
-  credentials = file("cred.json")
-}
-
-provider "google-beta" {
-  project     = var.gcp_project_id
-  credentials = file("cred.json")
-}
-
 ######################################
 ############ GKE CLUSTER #############
 ######################################
@@ -30,8 +6,9 @@ data "google_project" "project" {
 }
 
 data "google_compute_subnetwork" "dev_subnetwork" {
-  name   = var.subnetwork_name
-  region = var.subnetwork_region
+  project = var.gcp_project_id
+  name    = var.subnetwork_name
+  region  = var.subnetwork_region
 }
 
 module "gke_cluster" {
