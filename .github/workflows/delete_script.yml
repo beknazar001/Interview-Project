@@ -1,8 +1,8 @@
 name: Run Bash Script with cron in GitHub Actions
 
-on:
-  schedule:
-    - cron: '0 0 * * *' # run every day at midnight (UTC)
+on: push
+#   schedule:
+#     - cron: '0 0 * * *' # run every day at midnight (UTC)
 
 jobs:
   run-script:
