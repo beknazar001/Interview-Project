@@ -1,19 +1,25 @@
 provider "aws" {
-  access_key = "AKIASGVONQTU73K3EO5O"
-  secret_key = "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"
-  region     = "us-east-1"
+
+  region = "us-east-1"
+}
+terraform {
+  backend "s3" {
+    bucket = "beknzar-saittegin-dev-bucket-1234"
+    key    = "terraform/dev/eks/terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 module "eks" {
-  source               = "../eks"
+  source               = "../../../modules/eks"
   eks_name             = var.eks_name
   eks_version          = var.eks_version
   eks_endpoint         = var.eks_endpoint
   public_access        = var.public_access
-  subnet_ids           = ["subnet-03c8ab9d4159d5c00", "subnet-02458d5b9e37287a9"]
+  subnet_ids           = data.terraform_remote_state.subnet_ids.outputs.private_subnets[*]
   cluster_name         = var.cluster_name
   node_group_name      = var.node_group_name
-  node_subnets         = ["subnet-0706d6201042142e8", "subnet-0d2527ebfd17db762"]
+  node_subnets         = data.terraform_remote_state.subnet_ids.outputs.public_subnets[*]
   desired_size         = var.desired_size
   max_size             = var.max_size
   min_size             = var.min_size
@@ -22,7 +28,7 @@ module "eks" {
   disk_size            = var.disk_size
   force_update_version = var.force_update_version
   instance_types       = var.instance_types
-  vpc_id               = "vpc-0e65fca890dfac91e"
+  vpc_id               = data.terraform_remote_state.subnet_ids.outputs.vpc_id
 
   inbound_all = [{
     from_port   = var.inbound_from_port[0]
@@ -48,5 +54,13 @@ module "eks" {
 
   security_tags = {
     Name = var.security_group_tag
+  }
+}
+data "terraform_remote_state" "subnet_ids" {
+  backend = "s3"
+  config = {
+    region = "us-east-1"
+    key    = "terraform/dev/network/terraform.tfstate"
+    bucket = "beknzar-saittegin-dev-bucket-1234"
   }
 }

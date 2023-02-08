@@ -11,10 +11,12 @@ resource "aws_subnet" "public_subnets" {
   count                   = var.public_subnets
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.public_cidrs[count.index]
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
   availability_zone       = random_shuffle.az_list.result[count.index]
   tags = {
-    Name = "${var.env}-public-subnet-${count.index + 1}"
+    Name                        = "${var.env}-public-subnet-${count.index + 1}"
+    "kubernetes.io/cluster/eks" = "shared"
+    "kubernetes.io/role/elb"    = 1
   }
 }
 
@@ -28,6 +30,8 @@ resource "aws_subnet" "private_subnets" {
   map_public_ip_on_launch = false
   availability_zone       = random_shuffle.az_list.result[count.index]
   tags = {
-    Name = "${var.env}-private-subnet-${count.index + 1}"
+    Name                        = "${var.env}-private-subnet-${count.index + 1}"
+    "kubernetes.io/cluster/eks" = "shared"
+    "kubernetes.io/role/elb"    = 1
   }
 }
