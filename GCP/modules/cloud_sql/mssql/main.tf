@@ -175,19 +175,3 @@ resource "null_resource" "module_depends_on" {
     value = length(var.module_depends_on)
   }
 }
-
-
-#################################
-resource "google_sql_database" "databases" {
-  for_each   = var.databases
-  name       = each.value.name
-  project    = var.project_id
-  instance   = google_sql_database_instance.default.name
-  charset    = each.value.charset
-  collation  = each.value.collation
-  depends_on = [null_resource.module_depends_on, google_sql_database_instance.default, google_sql_user.default, google_sql_user.additional_users]
-}
-
-variable "databases" {
-  description = "databases to be created in the master instance"
-}

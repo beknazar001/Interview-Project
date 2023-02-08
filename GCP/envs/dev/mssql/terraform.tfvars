@@ -27,11 +27,3 @@ read_replicas = [
     })
     }
 ]
-
-databases = [
-  {
-    name = "test"
-    charset = null
-    collation = null
-  }
-]

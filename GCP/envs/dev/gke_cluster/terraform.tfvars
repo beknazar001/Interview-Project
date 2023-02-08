@@ -1,14 +1,14 @@
-gcp_project_id = "consul-368213"
+gcp_project_id = "anttech2"
 gcp_region = "us-central1"
 
 #############Existing subnetwork#############
-subnetwork_name = "subnet-01"
+subnetwork_name = "application-subnet"
 subnetwork_region = "us-central1"
 
 ######################################
 ############ GKE CLUSTER #############
 ######################################
-gke_cluster_name        = "wires-dev-us-central1-gke"
+gke_cluster_name        = "anttech-dev-cluster"
 location                = "us-central1-a"
 enable_private_nodes    = true
 enable_private_endpoint = false
