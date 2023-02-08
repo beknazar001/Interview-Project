@@ -1,5 +1,5 @@
 module "google_networks" {
-  source          = "../../../../GCP/modules/gcp_vpc"
+  source = "../../../modules/gcp_vpc"
   nat_subnet_name = "application-subnet"
   #==========================SUBNETS=============================
   subnets = var.subnets
