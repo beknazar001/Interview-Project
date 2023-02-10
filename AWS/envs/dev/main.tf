@@ -12,6 +12,10 @@ module "networking" {
   env                         = "dev"
 }
 
+
+
+
+
 module "eks" {
   source               = "../../../modules/eks"
   eks_name             = var.eks_name
