@@ -4,7 +4,8 @@ private_sn_count            = 2
 associate_public_ip_address = true
 key_name                    = "for-bastion"
 instance_type               = "t2.micro"
-env                         = "prod"
+env                         = "dev"
+
 eks_name             = "eks"
 eks_version          = "1.23"
 eks_endpoint         = false

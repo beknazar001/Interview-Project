@@ -12,10 +12,10 @@ data "aws_ami" "default" {
 
 
 resource "aws_instance" "default" {
-  instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.bastion_host.id]
-  ami                    = data.aws_ami.default.id
-  #   iam_instance_profile        = local.instance_profile
+  instance_type               = var.instance_type
+  vpc_security_group_ids      = [aws_security_group.bastion_host.id]
+  ami                         = data.aws_ami.default.id
+  iam_instance_profile        = aws_iam_instance_profile.bastion_instance_role.name
   associate_public_ip_address = var.associate_public_ip_address
   key_name                    = var.key_name
   subnet_id                   = aws_subnet.public_subnets[0].id
@@ -86,4 +86,42 @@ resource "aws_security_group" "bastion_host" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
+}
+
+resource "aws_iam_role" "instance_role" {
+  name               = "eks-cluster-bastion-role"
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "instance_role-AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.instance_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "instance_role-AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.instance_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "instance_role-AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.instance_role.name
+}
+
+resource "aws_iam_instance_profile" "bastion_instance_role" {
+  name = "eks-bastion_instance_role"
+  role = aws_iam_role.instance_role.name
 }
