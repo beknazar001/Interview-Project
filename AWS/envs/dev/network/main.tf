@@ -1,5 +1,5 @@
 module "networking" {
-  source                      = "../../modules/network"
+  source                      = "../../../modules/network"
   vpc_cidr_block              = var.vpc_cidr
   max_subnets                 = var.max_subnets
   public_subnets              = var.public_sn_count
@@ -13,7 +13,7 @@ module "networking" {
 }
 
 module "eks" {
-  source               = "../../../../eks"
+  source               = "../../../modules/eks"
   eks_name             = var.eks_name
   eks_version          = var.eks_version
   eks_endpoint         = var.eks_endpoint
@@ -58,4 +58,32 @@ module "eks" {
     Name = var.security_group_tag
   }
   depends_on = [module.networking]
+}
+
+
+provider "kubernetes" {
+  host                   = module.eks.endpoint
+  cluster_ca_certificate = module.eks.cacert
+  token                  = module.eks.token
+} 
+
+
+
+resource "kubernetes_config_map" "aws_auth_configmap" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+  data = {
+    mapRoles = <<YAML
+  - rolearn: ${var.eks_role_arn}
+    username: kubectl-access-user
+    groups:
+      - system:masters
+  YAML
+    }
+}
+
+variable "eks_role_arn" {
+  default = "arn:aws:iam::612155163873:role/eks_admin_role"
 }
