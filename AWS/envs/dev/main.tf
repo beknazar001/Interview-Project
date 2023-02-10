@@ -76,3 +76,30 @@ module "db" {
   subnet_ids                      = module.networking.private_subnets
   enabled_cloudwatch_logs_exports = ["upgrade"]
 }
+
+provider "kubernetes" {
+  host                   = module.eks.endpoint
+  cluster_ca_certificate = module.eks.cacert
+  token                  = module.eks.token
+} 
+
+
+
+resource "kubernetes_config_map" "aws_auth_configmap" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+  data = {
+    mapRoles = <<YAML
+  - rolearn: ${var.eks_role_arn}
+    username: kubectl-access-user
+    groups:
+      - system:masters
+  YAML
+    }
+}
+
+variable "eks_role_arn" {
+  default = "arn:aws:iam::612155163873:role/eks_admin_role"
+}
