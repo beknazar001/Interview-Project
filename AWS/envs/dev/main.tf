@@ -5,12 +5,16 @@ module "networking" {
   public_subnets              = var.public_sn_count
   private_subnets             = var.private_sn_count
   public_cidrs                = ["192.168.1.0/24", "192.168.2.0/24"]
-  private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
+  private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24"]
   instance_type               = var.instance_type
   key_name                    = var.key_name
   associate_public_ip_address = var.associate_public_ip_address
   env                         = "dev"
 }
+
+
+
+
 
 module "eks" {
   source               = "../../../modules/eks"
@@ -18,10 +22,10 @@ module "eks" {
   eks_version          = var.eks_version
   eks_endpoint         = var.eks_endpoint
   public_access        = var.public_access
-  subnet_ids           = module.networking.public_subnets[*]
+  subnet_ids           = module.networking.private_subnets
   cluster_name         = var.cluster_name
   node_group_name      = var.node_group_name
-  node_subnets         = module.networking.private_subnets[*]
+  node_subnets         = module.networking.private_subnets
   desired_size         = var.desired_size
   max_size             = var.max_size
   min_size             = var.min_size
@@ -31,35 +35,47 @@ module "eks" {
   force_update_version = var.force_update_version
   instance_types       = var.instance_types
   vpc_id               = module.networking.vpc_id
-
-  inbound_all = [{
-    from_port   = var.inbound_from_port[0]
-    to_port     = var.inbound_to_port[0]
-    protocol    = var.inbound_protocol
-    cidr_blocks = var.inbound_blocks
-    },
-    {
-      from_port   = var.inbound_from_port[1]
-      to_port     = var.inbound_to_port[1]
-      protocol    = var.inbound_protocol
-      cidr_blocks = var.inbound_blocks
-    }
-  ]
-
-
-  outbound_all = [{
-    from_port   = var.outbound_from_port[0]
-    to_port     = var.outbound_to_port[0]
-    protocol    = var.outbound_protocol
-    cidr_blocks = var.outbound_blocks
-  }]
-
+  inbound_all          = var.inbound_all
+  outbound_all         = var.outbound_all
   security_tags = {
     Name = var.security_group_tag
   }
-  depends_on = [module.networking]
 }
 
+#########################################################
+###############       RDS Module           ##############
+#########################################################
+
+module "db" {
+  source                 = "../../../modules/aws_rds"
+  identifier             = "demo"
+  engine                 = "postgres"
+  engine_version         = "14"
+  instance_class         = "db.t3.micro"
+  allocated_storage      = "20"
+  max_allocated_storage  = "100"
+  username               = "postgres"
+  password               = "admin250800"
+  port                   = "5432"
+  vpc_security_group_ids = [""] #security groups
+  multi_az               = false
+  publicly_accessible    = false
+  deletion_protection    = false
+
+  tags = {
+    "key" = "value"
+  }
+
+  db_option_group_name = "postresql-option-group"
+  description          = "postgresql-option-group"
+  major_engine_version = "14"
+  options              = []
+
+  subnet_group_name               = "postresql-subnet-group"
+  subnet_group_description        = "postresql-subnet-group"
+  subnet_ids                      = module.networking.private_subnets
+  enabled_cloudwatch_logs_exports = ["upgrade"]
+}
 
 provider "kubernetes" {
   host                   = module.eks.endpoint

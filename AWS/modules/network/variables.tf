@@ -37,7 +37,7 @@ variable "instance_type" {
 variable "key_name" {
   type        = string
   default     = ""
-  description = "Key name"
+  description = " Create your own keypair and specify key name"
 }
 
 variable "root_block_device_encrypted" {

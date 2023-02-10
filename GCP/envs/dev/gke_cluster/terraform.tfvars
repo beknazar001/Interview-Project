@@ -1,8 +1,8 @@
 gcp_project_id = "anttech2"
-gcp_region = "us-central1"
+gcp_region     = "us-central1"
 
 #############Existing subnetwork#############
-subnetwork_name = "application-subnet"
+subnetwork_name   = "application-subnet"
 subnetwork_region = "us-central1"
 
 ######################################

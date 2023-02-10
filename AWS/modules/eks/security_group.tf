@@ -4,8 +4,8 @@ resource "aws_security_group" "my-alb-sg" {
   dynamic "ingress" {
     for_each = var.inbound_all
     content {
-      from_port   = ingress.value.from_port
-      to_port     = ingress.value.to_port
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
       protocol    = ingress.value.protocol
       cidr_blocks = ingress.value.cidr_blocks
     }
@@ -14,8 +14,8 @@ resource "aws_security_group" "my-alb-sg" {
   dynamic "egress" {
     for_each = var.outbound_all
     content {
-      from_port   = egress.value.from_port
-      to_port     = egress.value.to_port
+      from_port   = egress.value.port
+      to_port     = egress.value.port
       protocol    = egress.value.protocol
       cidr_blocks = egress.value.cidr_blocks
     }

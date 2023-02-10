@@ -37,7 +37,6 @@ variable "env" {
   description = "The name of environment: dev, stage, prod"
 }
 
-
 variable "eks_name" {}
 variable "eks_version" {}
 variable "eks_endpoint" {}
@@ -52,12 +51,20 @@ variable "capacity_type" {}
 variable "disk_size" {}
 variable "force_update_version" {}
 variable "instance_types" {}
-variable "inbound_from_port" {}
-variable "inbound_to_port" {}
-variable "inbound_protocol" {}
-variable "inbound_blocks" {}
-variable "outbound_from_port" {}
-variable "outbound_to_port" {}
-variable "outbound_protocol" {}
-variable "outbound_blocks" {}
 variable "security_group_tag" {}
+variable "inbound_all" {
+  type = list(object({
+    # from_port   = number
+    port        = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+variable "outbound_all" {
+  type = list(object({
+    port = number
+    # to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
