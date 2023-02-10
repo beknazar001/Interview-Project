@@ -82,27 +82,19 @@ variable "instance_types" {
 variable "security_group_tag" {
     description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
 }
-variable "inbound_from_port" {
-    description = "Start port (or ICMP type number if protocol is icmp or icmpv6)."
+variable "inbound_all" {
+  type = list(object({
+    # from_port   = number
+    port        = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
 }
-variable "inbound_to_port" {
-    description = "End range port (or ICMP code if protocol is icmp)."
-}
-variable "inbound_protocol" {
-    description = "Protocol."
-}
-variable "inbound_blocks" {
-    description = " List of CIDR blocks."
-}
-variable "outbound_from_port" {
-    description = "Start port (or ICMP type number if protocol is icmp)"
-}
-variable "outbound_to_port" {
-    description = "End range port (or ICMP code if protocol is icmp)."
-}
-variable "outbound_protocol" {
-    description = "List of CIDR blocks."
-}
-variable "outbound_blocks" {
-    description = "Protocol."
+variable "outbound_all" {
+  type = list(object({
+    port = number
+    # to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
 }
