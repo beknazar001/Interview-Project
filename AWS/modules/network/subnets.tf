@@ -8,11 +8,11 @@ resource "random_shuffle" "az_list" {
 ##########     Public subnets     ############
 ##############################################
 resource "aws_subnet" "public_subnets" {
-  count                   = var.public_subnets
+  count                   = length(var.azs)
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.public_cidrs[count.index]
+  cidr_block              = element(var.public_cidrs, count.index)
   map_public_ip_on_launch = true
-  availability_zone       = random_shuffle.az_list.result[count.index]
+  availability_zone       = element(var.azs, count.index)
   tags = {
     Name                        = "${var.env}-public-subnet-${count.index + 1}"
     "kubernetes.io/cluster/eks" = "shared"
@@ -24,11 +24,11 @@ resource "aws_subnet" "public_subnets" {
 ##########     Private subnets     ############
 ##############################################
 resource "aws_subnet" "private_subnets" {
-  count                   = var.private_subnets
+  count                   = length(var.azs)
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.private_cidrs[count.index]
+  cidr_block              = element(var.private_cidrs, count.index)
   map_public_ip_on_launch = false
-  availability_zone       = random_shuffle.az_list.result[count.index]
+  availability_zone       = element(var.azs, count.index)
   tags = {
     Name                        = "${var.env}-private-subnet-${count.index + 1}"
     "kubernetes.io/cluster/eks" = "shared"
