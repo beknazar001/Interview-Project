@@ -67,7 +67,6 @@ variable "vpc_id" {
   description = "VPC ID."
 }
 variable "security_tags" {
-  type        = list
   description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
 }
 variable "inbound_all" {
