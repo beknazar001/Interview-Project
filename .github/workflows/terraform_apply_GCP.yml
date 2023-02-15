@@ -1,0 +1,32 @@
+# name: Deploy Terraform to GCP
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# env:
+#   GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Set up Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         terraform_version: 0.15.0
+
+#     - name: Configure GCP credentials
+#       uses: google-github-actions/configure-gcp-credentials@v2
+#       with:
+#         credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+#     - name: Deploy Terraform
+#       run: |
+#         terraform init
+#         terraform apply -auto-approve
