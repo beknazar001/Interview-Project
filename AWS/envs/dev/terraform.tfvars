@@ -26,18 +26,5 @@ outbound_all = [{
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
 }]
-inbound_all = [
-    {
-    port   = 443
-    # to_port     = [443]
-    protocol    = "tcp"
-    cidr_blocks = ["192.168.1.54/32"]
- },
-   {
-    port   = 22
-    # to_port     = [443]
-    protocol    = "tcp"
-    cidr_blocks = ["192.168.1.54/32"]
- }
-]
+
 security_group_tag   = "test"

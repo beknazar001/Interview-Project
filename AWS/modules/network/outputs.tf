@@ -9,4 +9,7 @@ output "public_subnets" {
 output "private_subnets" {
   value = aws_subnet.private_subnets.*.id
 }
-
+output "bastion_internal_ip" {
+  description = "bastion private ip"
+  value = aws_instance.bastion.private_ip
+}

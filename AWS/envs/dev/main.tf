@@ -37,7 +37,22 @@ module "eks" {
   force_update_version = var.force_update_version
   instance_types       = var.instance_types
   vpc_id               = module.networking.vpc_id
-  inbound_all          = var.inbound_all
+  inbound_all = [
+    {
+    port   = 443
+    # to_port     = [443]
+    protocol    = "tcp"
+    cidr_blocks = ["${module.networking.bastion_internal_ip}/32"] # you have to update this part after completion to the ec2 private ip
+ },
+   {
+    port   = 22
+    # to_port     = [443]
+    protocol    = "tcp"
+    cidr_blocks = ["${module.networking.bastion_internal_ip}/32"]  # you have to update this part after completion to the ec2 private ip
+
+ }
+]
+
   outbound_all         = var.outbound_all
   security_tags = {
     Name = var.security_group_tag
@@ -87,21 +102,21 @@ provider "kubernetes" {
 
 
 
-resource "kubernetes_config_map" "aws_auth_configmap" {
-  metadata {
-    name      = "aws-auth"
-    namespace = "kube-system"
-  }
-  data = {
-    mapRoles = <<YAML
-  - rolearn: ${var.eks_role_arn}
-    username: kubectl-access-user
-    groups:
-      - system:masters
-  YAML
-    }
-}
+# resource "kubernetes_config_map" "aws_auth_configmap" {
+#   metadata {
+#     name      = "aws-auth"
+#     namespace = "kube-system"
+#   }
+#   data = {
+#     mapRoles = <<YAML
+#   - rolearn: ${var.eks_role_arn}
+#     username: kubectl-access-user
+#     groups:
+#       - system:masters
+#   YAML
+#     }
+# }
 
-variable "eks_role_arn" {
-  default = "arn:aws:iam::612155163873:role/eks_admin_role"
-}
+# variable "eks_role_arn" {
+#   default = "arn:aws:iam::854850930186:role/eks_admin_role"
+# }

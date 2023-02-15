@@ -9,19 +9,32 @@ data "aws_ami" "default" {
   }
   owners = var.ami_owners
 }
+resource "aws_key_pair" "for-bastion" {
+  key_name   = "deployer-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbJKzWR/gcXPKusf/v22TYqRIlCWZ50EzYzt7BXCCASRFvkmJPK9n6dZVChutjF9JuKgiBp4DgqDn/iaOADAHtqd/nz8kuBhTk0pLazFAQGveDnksyoKkj4o8DUsSF+DPvRgJjHxRGF7tjX08nXKCKlUOvnOQaLodHUoq6nxe4fDKoT6rD/fP3LskmfaRCuA9YJ+AXddXA5p0dfa+YbDjQHFwKJPywvxEHNQMmGBQC3YEf3MTIAlQfRFlRbpgSxNdwbfQ3TmC/G6qHwq1gsu/aysLKR1oevDrhb/eOxW8yXeYjoHghi0zhf1wl97s3wUJttnVjjtuLFp5pNRmcCgrF ec2-user@ip-192-168-1-254.ec2.internal"
+}
 
-
-resource "aws_instance" "default" {
+resource "aws_instance" "bastion" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.bastion_host.id]
   ami                         = data.aws_ami.default.id
   iam_instance_profile        = aws_iam_instance_profile.bastion_instance_role.name
   associate_public_ip_address = var.associate_public_ip_address
-  key_name                    = var.key_name
+  key_name                    = aws_key_pair.for-bastion.key_name
   subnet_id                   = aws_subnet.public_subnets[0].id
   monitoring                  = var.monitoring
   disable_api_termination     = var.disable_api_termination
-
+  user_data = <<EOF
+  #!/bin/bash
+  curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+  chmod +x ./kubectl
+  sudo cp ./kubectl /usr/local/bin
+  export PATH=/usr/local/bin:$PATH
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  sudo ./aws/install
+  sudo yum install git -y
+EOF
   metadata_options {
     http_endpoint               = (var.metadata_http_endpoint_enabled) ? "enabled" : "disabled"
     http_put_response_hop_limit = var.metadata_http_put_response_hop_limit
@@ -51,7 +64,7 @@ resource "aws_instance" "default" {
 }
 
 resource "aws_eip" "default" {
-  instance = aws_instance.default.id
+  instance = aws_instance.bastion.id
   vpc      = true
   tags = {
     Name = "${var.env}-bastion-host-eip"
