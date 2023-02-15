@@ -1,11 +1,12 @@
 module "networking" {
-  source                      = "../../../modules/network"
-  vpc_cidr_block              = var.vpc_cidr
-  max_subnets                 = var.max_subnets
-  public_subnets              = var.public_sn_count
-  private_subnets             = var.private_sn_count
+  source         = "../../modules/network"
+  vpc_cidr_block = var.vpc_cidr
+  max_subnets    = var.max_subnets
+  # public_subnets              = var.public_sn_count
+  # private_subnets             = var.private_sn_count
   public_cidrs                = ["192.168.1.0/24", "192.168.2.0/24"]
-  private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24"]
+  private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
+  azs                         = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
   instance_type               = var.instance_type
   key_name                    = var.key_name
   associate_public_ip_address = var.associate_public_ip_address
@@ -13,7 +14,7 @@ module "networking" {
 }
 
 module "eks" {
-  source               = "../../../modules/eks"
+  source               = "../../modules/eks"
   eks_name             = var.eks_name
   eks_version          = var.eks_version
   eks_endpoint         = var.eks_endpoint
@@ -43,7 +44,7 @@ module "eks" {
 #########################################################
 
 module "db" {
-  source                 = "../../../modules/aws_rds"
+  source                 = "../../modules/aws_rds"
   identifier             = "demo"
   engine                 = "postgres"
   engine_version         = "14"

@@ -8,9 +8,13 @@ variable "max_subnets" {
   type = number
 }
 
-variable "public_subnets" {
-  description = "The numbet of public subnets to be created"
-  type        = number
+# variable "public_subnets" {
+#   description = "The numbet of public subnets to be created"
+#   type        = number
+# }
+
+variable "azs" {
+
 }
 
 variable "public_cidrs" {
@@ -18,10 +22,10 @@ variable "public_cidrs" {
   # type        = number
 }
 
-variable "private_subnets" {
-  description = "The numbet of public subnets to be created"
-  type        = number
-}
+# variable "private_subnets" {
+#   description = "The numbet of public subnets to be created"
+#   type        = number
+# }
 
 variable "private_cidrs" {
   description = "The cidr range of the public subnet"
