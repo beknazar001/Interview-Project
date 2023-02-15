@@ -37,21 +37,51 @@ variable "env" {
   description = "The name of environment: dev, stage, prod"
 }
 
-variable "eks_name" {}
-variable "eks_version" {}
-variable "eks_endpoint" {}
-variable "public_access" {}
-variable "cluster_name" {}
-variable "node_group_name" {}
-variable "desired_size" {}
-variable "max_size" {}
-variable "min_size" {}
-variable "ami_type" {}
-variable "capacity_type" {}
-variable "disk_size" {}
-variable "force_update_version" {}
-variable "instance_types" {}
-variable "security_group_tag" {}
+variable "eks_name" {
+    description = "Name of the cluster."
+}
+variable "eks_version" {
+    description = "Desired Kubernetes master version."
+}
+variable "eks_endpoint" {
+    description = "Whether the Amazon EKS private API server endpoint is enabled."
+}
+variable "public_access" {
+    description = "Whether the Amazon EKS public API server endpoint is enabled. "
+}
+variable "cluster_name" {
+    description = "Name of the EKS Cluster. "
+}
+variable "node_group_name" {
+    description = "Name of the EKS Node Group. "
+}
+variable "desired_size" {
+    description = "Desired number of worker nodes."
+}
+variable "max_size" {
+    description = "Maximum number of worker nodes."
+}
+variable "min_size" {
+    description = "Minimum number of worker nodes."
+}
+variable "ami_type" {
+    description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group. "
+}
+variable "capacity_type" {
+    description = "Type of capacity associated with the EKS Node Group. "
+}
+variable "disk_size" {
+    description = "Disk size in GiB for worker nodes."
+}
+variable "force_update_version" {
+    description = "Force version update if existing pods are unable to be drained due to a pod disruption budget issue."
+}
+variable "instance_types" {
+    description = "List of instance types associated with the EKS Node Group."
+}
+variable "security_group_tag" {
+    description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
+}
 variable "inbound_all" {
   type = list(object({
     # from_port   = number

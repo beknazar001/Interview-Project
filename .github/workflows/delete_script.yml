@@ -1,31 +1,31 @@
-name: Run Bash Script with cron in GitHub Actions
+# name: Run Bash Script with cron in GitHub Actions
 
-on: push
-#   schedule:
-#     - cron: '0 0 * * *' # run every day at midnight (UTC)
+# on: push
+# #   schedule:
+# #     - cron: '0 0 * * *' # run every day at midnight (UTC)
 
-jobs:
-  run-script:
-    runs-on: ubuntu-latest
+# jobs:
+#   run-script:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
     
-    - name: Configure GCP credentials
-      uses: google-github-actions/configure-gcp-credentials@v2
-      with:
-        credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#     - name: Configure GCP credentials
+#       uses: google-github-actions/configure-gcp-credentials@v2
+#       with:
+#         credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
-    - name: Authenticate to GCP
-      run: |
-        echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64 --decode > service_account.json
-        gcloud auth activate-service-account --key-file service_account.json
+#     - name: Authenticate to GCP
+#       run: |
+#         echo ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64 --decode > service_account.json
+#         gcloud auth activate-service-account --key-file service_account.json
 
-    - name: Set GCP Project
-      run: |
-        gcloud config set project ${{ env.PROJECT_ID }}
+#     - name: Set GCP Project
+#       run: |
+#         gcloud config set project ${{ env.PROJECT_ID }}
 
-    - name: Run Bash Script
-      run: |
-        bash script.sh
+#     - name: Run Bash Script
+#       run: |
+#         bash script.sh
