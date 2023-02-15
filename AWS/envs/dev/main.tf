@@ -23,7 +23,7 @@ module "eks" {
   eks_version          = var.eks_version
   eks_endpoint         = var.eks_endpoint
   public_access        = var.public_access
-  subnet_ids           = module.networking.private_subnets
+  subnet_ids           = [module.networking.private_subnets_eks1,module.networking.private_subnets_eks2]
   cluster_name         = var.cluster_name
   node_group_name      = var.node_group_name
   node_subnets         = module.networking.private_subnets
@@ -74,7 +74,7 @@ module "db" {
 
   subnet_group_name               = "postresql-subnet-group"
   subnet_group_description        = "postresql-subnet-group"
-  subnet_ids                      = module.networking.private_subnets
+  subnet_ids                      = [module.networking.private_subnets_rds1,module.networking.private_subnets_rds2]
   enabled_cloudwatch_logs_exports = ["upgrade"]
 }
 
