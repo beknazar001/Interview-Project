@@ -4,9 +4,10 @@ module "networking" {
   max_subnets    = var.max_subnets
   # public_subnets              = var.public_sn_count
   # private_subnets             = var.private_sn_count
-  public_cidrs                = ["192.168.1.0/24", "192.168.2.0/24"]
-  private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
-  azs                         = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
+  public_cidrs  = ["192.168.1.0/24", "192.168.2.0/24"]
+  private_cidrs = ["192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
+  azs           = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
+  # public_azs                  = ["us-east-1a", "us-east-1b"]
   instance_type               = var.instance_type
   key_name                    = var.key_name
   associate_public_ip_address = var.associate_public_ip_address
@@ -23,7 +24,7 @@ module "eks" {
   eks_version          = var.eks_version
   eks_endpoint         = var.eks_endpoint
   public_access        = var.public_access
-  subnet_ids           = module.networking.private_subnets
+  subnet_ids           = [module.networking.private_subnets[0], module.networking.private_subnets[1]]
   cluster_name         = var.cluster_name
   node_group_name      = var.node_group_name
   node_subnets         = module.networking.private_subnets
@@ -74,7 +75,7 @@ module "db" {
 
   subnet_group_name               = "postresql-subnet-group"
   subnet_group_description        = "postresql-subnet-group"
-  subnet_ids                      = module.networking.private_subnets
+  subnet_ids                      = [module.networking.private_subnets[2], module.networking.private_subnets[3]]
   enabled_cloudwatch_logs_exports = ["upgrade"]
 }
 

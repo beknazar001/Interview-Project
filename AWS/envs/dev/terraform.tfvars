@@ -8,8 +8,8 @@ env                         = "dev"
 
 eks_name             = "eks"
 eks_version          = "1.23"
-eks_endpoint         = false
-public_access        = true
+eks_endpoint         = true
+public_access        = false
 cluster_name         = "eks"
 node_group_name      = "node_group"
 desired_size         = 2

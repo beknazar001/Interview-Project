@@ -13,6 +13,9 @@ variable "max_subnets" {
 #   type        = number
 # }
 
+# variable "public_azs" {
+
+# }
 variable "azs" {
 
 }
