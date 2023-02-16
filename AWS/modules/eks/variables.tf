@@ -71,7 +71,6 @@ variable "security_tags" {
 }
 variable "inbound_all" {
   type = list(object({
-    # from_port   = number
     port        = number
     protocol    = string
     cidr_blocks = list(string)
@@ -79,8 +78,7 @@ variable "inbound_all" {
 }
 variable "outbound_all" {
   type = list(object({
-    port = number
-    # to_port     = number
+    port        = number
     protocol    = string
     cidr_blocks = list(string)
   }))

@@ -78,8 +78,7 @@ variable "security_group_tag" {
 
 variable "outbound_all" {
   type = list(object({
-    port = number
-    # to_port     = number
+    port        = number
     protocol    = string
     cidr_blocks = list(string)
   }))
