@@ -1,5 +1,5 @@
 data "aws_ami" "default" {
-  most_recent = "true"
+  most_recent = "true" #(Optional) If more than one result is returned, use the most recent AMI.
   dynamic "filter" {
     for_each = var.ami_filter
     content {
@@ -24,7 +24,7 @@ resource "aws_instance" "bastion" {
   subnet_id                   = aws_subnet.public_subnets[0].id
   monitoring                  = var.monitoring
   disable_api_termination     = var.disable_api_termination
-  user_data                   = file("user_data.sh")
+  user_data                   = "${file("${path.module}/user_data.sh")}"
   metadata_options {
     http_endpoint               = (var.metadata_http_endpoint_enabled) ? "enabled" : "disabled"
     http_put_response_hop_limit = var.metadata_http_put_response_hop_limit
@@ -91,48 +91,7 @@ resource "aws_security_group" "bastion_host" {
   }
 }
 
-# resource "aws_iam_role" "instance_role" {
-#   name               = "eks-cluster-bastion-role"
-#   assume_role_policy = <<POLICY
-# {
-#   "Version": "2012-10-17",
-#   "Statement": [
-#     {
-#       "Effect": "Allow",
-#       "Principal": {
-#         "Service": "ec2.amazonaws.com"
-#       },
-#       "Action": "sts:AssumeRole"
-#     }
-#   ]
-# }
-# POLICY
-# }
 
-# resource "aws_iam_role_policy_attachment" "instance_role-AmazonEKSWorkerNodePolicy" {
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-#   role       = aws_iam_role.instance_role.name
-# }
-
-# resource "aws_iam_role_policy_attachment" "instance_role-AmazonEKS_CNI_Policy" {
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-#   role       = aws_iam_role.instance_role.name
-# }
-
-# resource "aws_iam_role_policy_attachment" "instance_role-AmazonEC2ContainerRegistryReadOnly" {
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-#   role       = aws_iam_role.instance_role.name
-# }
-
-# resource "aws_iam_instance_profile" "bastion_instance_role" {
-#   name = "eks-bastion_instance_role"
-#   role = aws_iam_role.instance_role.name
-# }
-
-
-# IAM
-
-# CLUSTER
 resource "aws_iam_role" "cluster" {
   name = "eks-cluster-role"
 
@@ -201,3 +160,51 @@ resource "aws_iam_instance_profile" "bastion_instance_role" {
   name = "eks-node-instance-profile"
   role = aws_iam_role.node.name
 }
+
+
+
+
+
+
+# resource "aws_iam_role" "instance_role" {
+#   name               = "eks-cluster-bastion-role"
+#   assume_role_policy = <<POLICY
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Principal": {
+#         "Service": "ec2.amazonaws.com"
+#       },
+#       "Action": "sts:AssumeRole"
+#     }
+#   ]
+# }
+# POLICY
+# }
+
+# resource "aws_iam_role_policy_attachment" "instance_role-AmazonEKSWorkerNodePolicy" {
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+#   role       = aws_iam_role.instance_role.name
+# }
+
+# resource "aws_iam_role_policy_attachment" "instance_role-AmazonEKS_CNI_Policy" {
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+#   role       = aws_iam_role.instance_role.name
+# }
+
+# resource "aws_iam_role_policy_attachment" "instance_role-AmazonEC2ContainerRegistryReadOnly" {
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+#   role       = aws_iam_role.instance_role.name
+# }
+
+# resource "aws_iam_instance_profile" "bastion_instance_role" {
+#   name = "eks-bastion_instance_role"
+#   role = aws_iam_role.instance_role.name
+# }
+
+
+# IAM
+
+# CLUSTER
