@@ -1,0 +1,73 @@
+variables:
+  TF_ROOT: "AWS/envs/dev"
+  PHASE: "BUILD"
+  IMAGE: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.1:v0.43.0"
+
+
+stages:
+  - terraform-init
+  - terraform-validate
+  - terraform-plan
+  - terraform-apply
+  - terraform-destroy
+
+
+# workflow:
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+terraform-init:
+  image: $IMAGE
+  stage: terraform-init
+  only:
+    variables:
+      - $PHASE == "BUILD"
+  script:
+    - cd ${TF_ROOT}
+    - gitlab-terraform init
+
+terraform-validate:
+  image: $IMAGE
+  stage: terraform-validate
+  only:
+    variables:
+      - $PHASE == "BUILD"
+  script:
+    - cd ${TF_ROOT}
+    - gitlab-terraform validate
+
+terraform-plan:
+  image: $IMAGE
+  stage: terraform-plan
+  only:
+    variables:
+      - $PHASE == "BUILD"
+  script:
+    - cd ${TF_ROOT}
+    - gitlab-terraform plan
+  dependencies:
+    - terraform-validate
+
+terraform-apply:
+  image: $IMAGE
+  stage: terraform-apply
+  only:
+    variables:
+      - $PHASE == "BUILD"
+  script:
+  - cd ${TF_ROOT}
+  - gitlab-terraform apply
+  dependencies:
+  - terraform-plan
+
+terraform-destroy:
+  image: $IMAGE
+  stage: terraform-destroy
+  only:
+    variables:
+      - $PHASE == "DESTROY"
+  script:
+  - cd ${TF_ROOT}
+  - gitlab-terraform destroy
+  dependencies:
+  - terraform-init
