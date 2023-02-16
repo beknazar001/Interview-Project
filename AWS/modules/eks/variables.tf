@@ -9,9 +9,11 @@ variable "eks_version" {
 variable "endpoint_private_access" {
   type        = bool
   description = "Whether the Amazon EKS private API server endpoint is enabled."
+  default = true
 }
 variable "endpoint_public_access" {
   type        = bool
+  default = false
   description = "Whether the Amazon EKS public API server endpoint is enabled. "
 }
 variable "subnet_ids" {

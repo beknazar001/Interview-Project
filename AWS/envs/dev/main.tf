@@ -1,13 +1,12 @@
 module "networking" {
   source                      = "../../modules/network"
-  vpc_cidr_block              = var.vpc_cidr
-  max_subnets                 = var.max_subnets
+  vpc_cidr_block              = "192.168.0.0/16"
+  max_subnets                 = 20
   public_cidrs                = ["192.168.1.0/24", "192.168.2.0/24"]
   private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
   azs                         = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
-  instance_type               = var.instance_type
-  key_name                    = var.key_name
-  associate_public_ip_address = var.associate_public_ip_address
+  instance_type               = "t2.micro"
+  associate_public_ip_address = true
   env                         = "dev"
 }
 
@@ -17,22 +16,20 @@ module "networking" {
 
 module "eks" {
   source                  = "../../modules/eks"
-  eks_name                = var.eks_name
-  eks_version             = var.eks_version
-  endpoint_private_access = var.endpoint_private_access
-  endpoint_public_access  = var.endpoint_public_access
+  eks_name                = "eks"
+  eks_version             = "1.23"
   subnet_ids              = [module.networking.private_subnets[0], module.networking.private_subnets[1]]
-  cluster_name            = var.cluster_name
-  node_group_name         = var.node_group_name
+  cluster_name            = "eks"
+  node_group_name         = "node_group"
   node_subnets            = module.networking.private_subnets
-  desired_size            = var.desired_size
-  max_size                = var.max_size
-  min_size                = var.min_size
-  ami_type                = var.ami_type
-  capacity_type           = var.capacity_type
-  disk_size               = var.disk_size
-  force_update_version    = var.force_update_version
-  instance_types          = var.instance_types
+  desired_size            = 3
+  max_size                = 4
+  min_size                = 2
+  ami_type                = "AL2_x86_64"
+  capacity_type           = "ON_DEMAND"
+  disk_size               = 20
+  force_update_version    = false
+  instance_types          = ["t2.small"]
   vpc_id                  = module.networking.vpc_id
   inbound_all = [
     {
@@ -50,7 +47,11 @@ module "eks" {
     }
   ]
 
-  outbound_all = var.outbound_all
+  outbound_all = [{
+  port        = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+}]
   security_tags = {
     Name = var.security_group_tag
   }
@@ -99,21 +100,3 @@ provider "kubernetes" {
 
 
 
-# resource "kubernetes_config_map" "aws_auth_configmap" {
-#   metadata {
-#     name      = "aws-auth"
-#     namespace = "kube-system"
-#   }
-#   data = {
-#     mapRoles = <<YAML
-#   - rolearn: ${var.eks_role_arn}
-#     username: kubectl-access-user
-#     groups:
-#       - system:masters
-#   YAML
-#     }
-# }
-
-# variable "eks_role_arn" {
-#   default = "arn:aws:iam::854850930186:role/eks_admin_role"
-# }
