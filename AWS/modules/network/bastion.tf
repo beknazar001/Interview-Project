@@ -24,17 +24,7 @@ resource "aws_instance" "bastion" {
   subnet_id                   = aws_subnet.public_subnets[0].id
   monitoring                  = var.monitoring
   disable_api_termination     = var.disable_api_termination
-  user_data = <<EOF
-  #!/bin/bash
-  curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
-  chmod +x ./kubectl
-  sudo cp ./kubectl /usr/local/bin
-  export PATH=/usr/local/bin:$PATH
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  unzip awscliv2.zip
-  sudo ./aws/install
-  sudo yum install git -y
-EOF
+  user_data = "${file("user_data.sh")}"
   metadata_options {
     http_endpoint               = (var.metadata_http_endpoint_enabled) ? "enabled" : "disabled"
     http_put_response_hop_limit = var.metadata_http_put_response_hop_limit
