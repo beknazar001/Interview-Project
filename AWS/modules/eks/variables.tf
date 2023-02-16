@@ -6,16 +6,16 @@ variable "eks_version" {
   type        = string
   description = "Desired Kubernetes master version."
 }
-variable "eks_endpoint" {
+variable "endpoint_private_access" {
   type        = bool
   description = "Whether the Amazon EKS private API server endpoint is enabled."
 }
-variable "public_access" {
+variable "endpoint_public_access" {
   type        = bool
   description = "Whether the Amazon EKS public API server endpoint is enabled. "
 }
 variable "subnet_ids" {
-  type        = list
+  type        = list(any)
   description = "List of subnet IDs."
 }
 variable "cluster_name" {
@@ -27,7 +27,7 @@ variable "node_group_name" {
   description = "Name of the EKS Node Group. "
 }
 variable "node_subnets" {
-  type        = list
+  type        = list(any)
   description = "Identifiers of EC2 Subnets to associate with the EKS Node Group. These subnets must have the following resource tag: kubernetes.io/cluster/CLUSTER_NAME (where CLUSTER_NAME is replaced with the name of the EKS Cluster)."
 }
 variable "desired_size" {
@@ -59,7 +59,7 @@ variable "force_update_version" {
   description = "Force version update if existing pods are unable to be drained due to a pod disruption budget issue."
 }
 variable "instance_types" {
-  type        = list
+  type        = list(any)
   description = "List of instance types associated with the EKS Node Group."
 }
 variable "vpc_id" {

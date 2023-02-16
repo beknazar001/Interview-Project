@@ -11,5 +11,5 @@ output "private_subnets" {
 }
 output "bastion_internal_ip" {
   description = "bastion private ip"
-  value = aws_instance.bastion.private_ip
+  value       = aws_instance.bastion.private_ip
 }

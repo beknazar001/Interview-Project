@@ -24,7 +24,7 @@ resource "aws_instance" "bastion" {
   subnet_id                   = aws_subnet.public_subnets[0].id
   monitoring                  = var.monitoring
   disable_api_termination     = var.disable_api_termination
-  user_data = "${file("user_data.sh")}"
+  user_data                   = file("user_data.sh")
   metadata_options {
     http_endpoint               = (var.metadata_http_endpoint_enabled) ? "enabled" : "disabled"
     http_put_response_hop_limit = var.metadata_http_put_response_hop_limit

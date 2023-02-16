@@ -12,10 +12,10 @@ resource "aws_eks_cluster" "eks" {
   vpc_config {
     security_group_ids = [aws_security_group.my-alb-sg.id]
     # Indicates whether or not the Amazon EKS private API server endpoint is enabled
-    endpoint_private_access = var.eks_endpoint
+    endpoint_private_access = var.endpoint_private_access
 
     # Indicates whether or not the Amazon EKS public API server endpoint is enabled
-    endpoint_public_access = var.public_access
+    endpoint_public_access = var.endpoint_public_access
 
     # Must be in at least two different availability zones
     subnet_ids = var.subnet_ids
