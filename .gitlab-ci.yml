@@ -55,7 +55,6 @@ terraform-apply:
   script:
   - cd ${TF_ROOT}
   - gitlab-terraform init
-  - gitlab-terraform state list -state=terraform.tfstate
   - gitlab-terraform apply
   # dependencies:
   # - terraform-plan
