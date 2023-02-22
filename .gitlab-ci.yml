@@ -46,18 +46,12 @@ stages:
 #   dependencies:
 #     - terraform-validate
 
-cache:
-  image: alpine
-  variables:
-    CACHE_KEY: my-cache-key
-  script:
-    - echo "Cleaning cache for key $CACHE_KEY"
-    - apk add --no-cache git # Install Git if needed
-    - gitlab-runner cache --delete --key $CACHE_KEY
 
 
 terraform-apply:
   image: $IMAGE
+  tags:
+    - primary
   when: manual
   stage: terraform-apply
   only:
