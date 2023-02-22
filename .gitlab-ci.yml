@@ -6,44 +6,44 @@ variables:
 
 # orchestration part
 stages:
-  - terraform-init
-  - terraform-validate
-  - terraform-plan
+#   - terraform-init
+#   - terraform-validate
+#   - terraform-plan
   - terraform-apply
-  - terraform-destroy
-# jobs
-terraform-init:
-  image: $IMAGE
-  # if you want to specidy in one 
-  stage: terraform-init
-  only:
-    variables:
-      - $PHASE == "BUILD"
-  script:
-    - cd ${TF_ROOT}
-    - gitlab-terraform init
+#   - terraform-destroy
+# # jobs
+# terraform-init:
+#   image: $IMAGE
+#   # if you want to specidy in one 
+#   stage: terraform-init
+#   only:
+#     variables:
+#       - $PHASE == "BUILD"
+#   script:
+#     - cd ${TF_ROOT}
+#     - gitlab-terraform init
 
-terraform-validate:
-  image: $IMAGE
-  stage: terraform-validate
-  only:
-    variables:
-      - $PHASE == "BUILD"
-  script:
-    - cd ${TF_ROOT}
-    - gitlab-terraform validate
+# terraform-validate:
+#   image: $IMAGE
+#   stage: terraform-validate
+#   only:
+#     variables:
+#       - $PHASE == "BUILD"
+#   script:
+#     - cd ${TF_ROOT}
+#     - gitlab-terraform validate
 
-terraform-plan:
-  image: $IMAGE
-  stage: terraform-plan
-  only:
-    variables:
-      - $PHASE == "BUILD"
-  script:
-    - cd ${TF_ROOT}
-    - gitlab-terraform plan
-  dependencies:
-    - terraform-validate
+# terraform-plan:
+#   image: $IMAGE
+#   stage: terraform-plan
+#   only:
+#     variables:
+#       - $PHASE == "BUILD"
+#   script:
+#     - cd ${TF_ROOT}
+#     - gitlab-terraform plan
+#   dependencies:
+#     - terraform-validate
 
 terraform-apply:
   image: $IMAGE
