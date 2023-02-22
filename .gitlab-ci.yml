@@ -6,45 +6,47 @@ variables:
 
 # orchestration part
 stages:
-#   - terraform-init
-#   - terraform-validate
-#   - terraform-plan
-
+  - terraform-init
+  - terraform-validate
+  - terraform-plan
   - terraform-apply
-#   - terraform-destroy
-# # jobs
-# terraform-init:
-#   image: $IMAGE
-#   # if you want to specidy in one 
-#   stage: terraform-init
-#   only:
-#     variables:
-#       - $PHASE == "BUILD"
-#   script:
-#     - cd ${TF_ROOT}
-#     - gitlab-terraform init
+  - terraform-destroy
+# jobs
+terraform-init:
+  image: $IMAGE
+  # if you want to specidy in one 
+  stage: terraform-init
+  only:
+    variables:
+      - $PHASE == "BUILD"
+  script:
+    - cd ${TF_ROOT}
+    - gitlab-terraform init
 
-# terraform-validate:
-#   image: $IMAGE
-#   stage: terraform-validate
-#   only:
-#     variables:
-#       - $PHASE == "BUILD"
-#   script:
-#     - cd ${TF_ROOT}
-#     - gitlab-terraform validate
+terraform-validate:
+  image: $IMAGE
+  stage: terraform-validate
+  only:
+    variables:
+      - $PHASE == "BUILD"
+  script:
+    - cd ${TF_ROOT}
+    - gitlab-terraform validate
 
-# terraform-plan:
-#   image: $IMAGE
-#   stage: terraform-plan
-#   only:
-#     variables:
-#       - $PHASE == "BUILD"
-#   script:
-#     - cd ${TF_ROOT}
-#     - gitlab-terraform plan
-#   dependencies:
-#     - terraform-validate
+terraform-plan:
+  stage: terraform-plan
+  script:
+    - cd ${TF_ROOT}
+    - gitlab-terraform plan
+    - gitlab-terraform plan-json
+  artifacts:
+    name: plan
+    paths:
+      - "${TF_ROOT}/plan.cache"
+    reports:
+      terraform: "${TF_ROOT}/plan.json"
+  dependencies:
+    - terraform-validate
 
 
 
@@ -61,17 +63,17 @@ terraform-apply:
   - cd ${TF_ROOT}
   - gitlab-terraform init
   - gitlab-terraform apply
-  # dependencies:
-  # - terraform-plan
+  dependencies:
+  - terraform-plan
 
-# terraform-destroy:
-#   image: $IMAGE
-#   stage: terraform-destroy
-#   only:
-#     variables:
-#       - $PHASE == "DESTROY"
-#   script:
-#   - cd ${TF_ROOT}
-#   - gitlab-terraform destroy
-#   dependencies:
-#   - terraform-init
+terraform-destroy:
+  image: $IMAGE
+  stage: terraform-destroy
+  only:
+    variables:
+      - $PHASE == "DESTROY"
+  script:
+  - cd ${TF_ROOT}
+  - gitlab-terraform destroy
+  dependencies:
+  - terraform-init
