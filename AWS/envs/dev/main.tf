@@ -99,21 +99,3 @@ provider "kubernetes" {
 
 
 
-# resource "kubernetes_config_map" "aws_auth_configmap" {
-#   metadata {
-#     name      = "aws-auth"
-#     namespace = "kube-system"
-#   }
-#   data = {
-#     mapRoles = <<YAML
-#   - rolearn: ${var.eks_role_arn}
-#     username: kubectl-access-user
-#     groups:
-#       - system:masters
-#   YAML
-#     }
-# }
-
-# variable "eks_role_arn" {
-#   default = "arn:aws:iam::854850930186:role/eks_admin_role"
-# }
