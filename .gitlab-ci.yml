@@ -51,7 +51,7 @@ stages:
 terraform-apply:
   image: $IMAGE
   tags:
-    - primary
+    - gitlab-org-docker
   when: manual
   stage: terraform-apply
   only:
