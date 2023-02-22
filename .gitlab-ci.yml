@@ -60,14 +60,14 @@ terraform-apply:
   # dependencies:
   # - terraform-plan
 
-terraform-destroy:
-  image: $IMAGE
-  stage: terraform-destroy
-  only:
-    variables:
-      - $PHASE == "DESTROY"
-  script:
-  - cd ${TF_ROOT}
-  - gitlab-terraform destroy
-  dependencies:
-  - terraform-init
+# terraform-destroy:
+#   image: $IMAGE
+#   stage: terraform-destroy
+#   only:
+#     variables:
+#       - $PHASE == "DESTROY"
+#   script:
+#   - cd ${TF_ROOT}
+#   - gitlab-terraform destroy
+#   dependencies:
+#   - terraform-init
