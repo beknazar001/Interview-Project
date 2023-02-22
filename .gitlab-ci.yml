@@ -1,23 +1,20 @@
+# variables part
 variables:
   TF_ROOT: "AWS/envs/dev"
   PHASE: "BUILD"
   IMAGE: "registry.gitlab.com/gitlab-org/terraform-images/releases/1.1:v0.43.0"
 
-
+# orchestration part
 stages:
   - terraform-init
   - terraform-validate
   - terraform-plan
   - terraform-apply
   - terraform-destroy
-
-
-# workflow:
-#   rules:
-#     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-
+# jobs
 terraform-init:
   image: $IMAGE
+  # if you want to specidy in one 
   stage: terraform-init
   only:
     variables:
@@ -50,6 +47,7 @@ terraform-plan:
 
 terraform-apply:
   image: $IMAGE
+  when: manual
   stage: terraform-apply
   only:
     variables:
