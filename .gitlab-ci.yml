@@ -9,7 +9,7 @@ stages:
 #   - terraform-init
 #   - terraform-validate
 #   - terraform-plan
-  - cleanup
+
   - terraform-apply
 #   - terraform-destroy
 # # jobs
@@ -48,7 +48,6 @@ stages:
 
 cache:
   image: alpine
-  stage: cleanup
   variables:
     CACHE_KEY: my-cache-key
   script:
