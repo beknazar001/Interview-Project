@@ -9,6 +9,7 @@ stages:
 #   - terraform-init
 #   - terraform-validate
 #   - terraform-plan
+  - cleanup
   - terraform-apply
 #   - terraform-destroy
 # # jobs
@@ -44,6 +45,14 @@ stages:
 #     - gitlab-terraform plan
 #   dependencies:
 #     - terraform-validate
+
+cache:
+  stage: cleanup
+  script:
+    - export CI_CONCURRENT_ID="${CI_CONCURRENT_ID:-0}"
+    - export CACHE_KEY="my_cache_key_${CI_CONCURRENT_ID}"
+    - echo "Cleaning cache for key $CACHE_KEY"
+    - gitlab-runner cache --project-root . --delete --key "$CACHE_KEY"
 
 terraform-apply:
   image: $IMAGE
