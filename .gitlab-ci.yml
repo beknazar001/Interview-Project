@@ -47,12 +47,15 @@ stages:
 #     - terraform-validate
 
 cache:
+  image: alpine
   stage: cleanup
+  variables:
+    CACHE_KEY: my-cache-key
   script:
-    - export CI_CONCURRENT_ID="${CI_CONCURRENT_ID:-0}"
-    - export CACHE_KEY="my_cache_key_${CI_CONCURRENT_ID}"
     - echo "Cleaning cache for key $CACHE_KEY"
-    - gitlab-runner cache --project-root . --delete --key "$CACHE_KEY"
+    - apk add --no-cache git # Install Git if needed
+    - gitlab-runner cache --delete --key $CACHE_KEY
+
 
 terraform-apply:
   image: $IMAGE
