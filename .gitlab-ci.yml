@@ -34,6 +34,7 @@ terraform-validate:
     - gitlab-terraform validate
 
 terraform-plan:
+  image: $IMAGE
   stage: terraform-plan
   script:
     - cd ${TF_ROOT}
