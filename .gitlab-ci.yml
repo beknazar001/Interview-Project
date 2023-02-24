@@ -62,7 +62,6 @@ terraform-apply:
       - $PHASE == "BUILD"
   script:
   - cd ${TF_ROOT}
-  - gitlab-terraform init
   - gitlab-terraform apply
   dependencies:
   - terraform-plan
