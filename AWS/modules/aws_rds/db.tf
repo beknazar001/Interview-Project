@@ -9,7 +9,7 @@ resource "aws_db_instance" "ms-sql" {
   password                              = var.password
   port                                  = var.port
   iam_database_authentication_enabled   = var.iam_database_authentication_enabled
-  vpc_security_group_ids                = var.vpc_security_group_ids
+  vpc_security_group_ids                = [aws_security_group.rds_sg.id]
   db_subnet_group_name                  = aws_db_subnet_group.db_sg.id
   parameter_group_name                  = var.parameter_group_name
   option_group_name                     = aws_db_option_group.db_opt_gr.name

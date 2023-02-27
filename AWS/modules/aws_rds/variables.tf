@@ -111,11 +111,6 @@ variable "iam_database_authentication_enabled" {
   default     = false
 }
 
-variable "vpc_security_group_ids" {
-  description = "List of VPC security groups to associate"
-  type        = list(string)
-}
-
 variable "parameter_group_name" {
   description = "Name of the DB parameter group to associate"
   type        = string
@@ -218,4 +213,26 @@ variable "performance_insights_kms_key_id" {
   description = "The ARN for the KMS key to encrypt Performance Insights data."
   type        = string
   default     = null
+}
+
+variable "security_tags" {
+  description = "List of security group IDs for the cross-account elastic network interfaces that Amazon EKS creates to use to allow communication between your worker nodes and the Kubernetes control plane."
+}
+variable "rds_inbound" {
+  type = list(object({
+    port        = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+variable "rds_outbound" {
+  type = list(object({
+    port        = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+}
+
+variable "vpc_id" {
+
 }

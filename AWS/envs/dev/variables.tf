@@ -2,6 +2,15 @@ variable "vpc_cidr" {
   type = string
 }
 
+variable "public_cidrs" {
+  description = "The cidr range of the public subnet"
+}
+
+variable "azs" {}
+
+variable "private_cidrs" {
+  description = "The cidr range of the public subnet"
+}
 
 variable "max_subnets" {
   type    = number

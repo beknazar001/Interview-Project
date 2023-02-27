@@ -1,9 +1,14 @@
+# network vars
 vpc_cidr                    = "192.168.0.0/16"
+public_cidrs                = ["192.168.1.0/24", "192.168.2.0/24"]
+private_cidrs               = ["192.168.3.0/24", "192.168.4.0/24", "192.168.5.0/24", "192.168.6.0/24"]
+azs                         = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
 associate_public_ip_address = true
 key_name                    = "for-bastion"
 instance_type               = "t2.micro"
 env                         = "dev"
-# for EKS module
+
+# EKS vars
 eks_name                = "eks"
 eks_version             = "1.23"
 endpoint_private_access = true
