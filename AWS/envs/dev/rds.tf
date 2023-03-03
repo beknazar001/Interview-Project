@@ -42,6 +42,13 @@ module "db" {
       cidr_blocks = ["${module.networking.bastion_internal_ip}/32"]
 
     }
+    ,
+    {
+      port        = 0
+      protocol    = "all"
+      cidr_blocks = ["192.168.0.0/16"]
+
+    }
   ]
 
   rds_outbound = var.outbound_all
