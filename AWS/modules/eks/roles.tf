@@ -100,7 +100,7 @@ resource "aws_iam_policy" "ecr-policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "amazon_ec2_container_registry_read_only" {
+resource "aws_iam_role_policy_attachment" "aws_iam_role_policy_attachment" {
   # This policy will allow us to download the private images from ECR repository.
   policy_arn = aws_iam_policy.ecr-policy.arn
 
