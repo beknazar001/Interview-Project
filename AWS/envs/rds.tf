@@ -64,7 +64,7 @@
 # }
 
 module "db" {
-  source                = "../../modules/aws_rds"
+  source                = "../../modules/rds-child-module"
   identifier            = var.identifier
   engine                = var.engine
   engine_version        = var.engine_version
