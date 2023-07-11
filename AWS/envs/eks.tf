@@ -2,7 +2,7 @@
 ###############       EKS Module           ##############
 #########################################################
 module "eks" {
-  source                  = "../../modules/eks"
+  source                  = "git::https://github.com/beknazar001/eks-child-module.git"
   eks_name                = var.eks_name
   eks_version             = var.eks_version
   endpoint_private_access = var.endpoint_private_access

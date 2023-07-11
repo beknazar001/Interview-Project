@@ -32,7 +32,7 @@ outbound_all = [{
 security_group_tag = "test"
 
 module "db" {
-  source                = "../../modules/aws_rds"
+  source                = "https://github.com/beknazar001/rds-child-module.git"
   identifier            = var.identifier
   engine                = var.engine
   engine_version        = var.engine_version

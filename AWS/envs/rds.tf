@@ -25,8 +25,8 @@
 #   major_engine_version = "14"
 #   # options              = []
 
-#   subnet_group_name               = "postresql-subnet-group"
-#   subnet_group_description        = "postresql-subnet-group"
+  subnet_group_name               = "postresql-subnet-group"
+  subnet_group_description        = "postresql-subnet-group"
 #   vpc_id                          = module.networking.vpc_id
 #   subnet_ids                      = [module.networking.private_subnets[2], module.networking.private_subnets[3]]
 #   enabled_cloudwatch_logs_exports = ["upgrade"]
@@ -57,14 +57,14 @@
 #   }
 # }
 
-# provider "kubernetes" {
-#   host                   = module.eks.endpoint
-#   cluster_ca_certificate = module.eks.cacert
-#   token                  = module.eks.token
-# }
+provider "kubernetes" {
+  host                   = module.eks.endpoint
+  cluster_ca_certificate = module.eks.cacert
+  token                  = module.eks.token
+}
 
 module "db" {
-  source                = "../../modules/rds-child-module"
+  source                = "git::https://github.com/beknazar001/rds-child-module.git"
   identifier            = var.identifier
   engine                = var.engine
   engine_version        = var.engine_version
@@ -89,8 +89,8 @@ module "db" {
 
   subnet_group_name               = "postresql-subnet-group"
   subnet_group_description        = "postresql-subnet-group"
-  vpc_id                          = data.aws_vpc.default.id
-  subnet_ids                      = data.aws_subnet_ids.default.ids
+  # vpc_id                          = data.aws_vpc.default.id
+  # subnet_ids                      = data.aws_subnet_ids.default.ids
   enabled_cloudwatch_logs_exports = ["upgrade"]
   rds_inbound = [
     {
@@ -116,17 +116,17 @@ module "db" {
   }
 }
 
-data "aws_vpc" "default" {
-  default = true
-}
+# data "aws_vpc" "default" {
+#   default = true
+# }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
-}
+# data "aws_subnet_ids" "default" {
+#   vpc_id = data.aws_vpc.default.id
+# }
 
-provider "kubernetes" {
-  host                   = var.kubernetes_host
-  cluster_ca_certificate = var.kubernetes_cluster_ca_certificate
-  token                  = var.kubernetes_token
-}
+# provider "kubernetes" {
+#   host                   = var.kubernetes_host
+#   cluster_ca_certificate = var.kubernetes_cluster_ca_certificate
+#   token                  = var.kubernetes_token
+# }
 
