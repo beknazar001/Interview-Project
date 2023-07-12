@@ -1,22 +1,26 @@
-#########################################################
-###############       RDS Module           ##############
-#########################################################
-module "db" {
-  source                = "../../modules/aws_rds"
-  identifier            = "demo"
-  engine                = "postgres"
-  engine_version        = "14"
-  instance_class        = "db.t3.micro"
-  allocated_storage     = "20"
-  max_allocated_storage = "100"
-  username              = "postgres"
-  password              = "postgres"
-  port                  = "5432"
-  multi_az              = false
-  publicly_accessible   = false
-  deletion_protection   = false
 
-  tags = {
+provider "kubernetes" {
+  host                   = module.eks.endpoint
+  cluster_ca_certificate = module.eks.cacert
+  token                  = module.eks.token
+}
+
+module "db" {
+  source                = "git::https://github.com/beknazar001/rds-child-module.git"
+  identifier            = var.identifier
+  engine                = var.engine
+  engine_version        = var.engine_version
+  instance_class        = var.instance_class
+  allocated_storage     = var.allocated_storage
+  max_allocated_storage = var.max_allocated_storage
+  username              = var.username
+  password              = var.password
+  port                  = var.port
+  multi_az              = var.multi_az
+  publicly_accessible   = var.publicly_accessible
+  deletion_protection   = var.deletion_protection
+
+   tags = {
     "env" = "${var.env}"
   }
 
@@ -40,14 +44,11 @@ module "db" {
       port        = 22
       protocol    = "tcp"
       cidr_blocks = ["${module.networking.bastion_internal_ip}/32"]
-
-    }
-    ,
+    },
     {
       port        = 0
       protocol    = "all"
       cidr_blocks = ["192.168.0.0/16"]
-
     }
   ]
 
@@ -57,8 +58,4 @@ module "db" {
   }
 }
 
-provider "kubernetes" {
-  host                   = module.eks.endpoint
-  cluster_ca_certificate = module.eks.cacert
-  token                  = module.eks.token
-}
+
