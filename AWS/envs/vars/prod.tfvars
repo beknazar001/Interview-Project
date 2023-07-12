@@ -40,3 +40,17 @@ inbound_all = [
   }
 ]
 security_group_tag = "test"
+
+# rds vars 
+identifier                = "demo"
+engine                    = "postgres"
+engine_version            = "14"
+instance_class            = "db.t3.micro"
+allocated_storage         = "20"
+max_allocated_storage     = "100"
+username                  = "postgres"
+password                  = "postgres"
+port                      = "5432"
+multi_az                  = "false"
+publicly_accessible       = "false"
+deletion_protection       = "false"

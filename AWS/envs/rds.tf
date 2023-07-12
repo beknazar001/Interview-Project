@@ -16,19 +16,19 @@
 #   publicly_accessible   = false
 #   deletion_protection   = false
 
-#   tags = {
-#     "env" = "${var.env}"
-#   }
+  # tags = {
+  #   "env" = "${var.env}"
+  # }
 
 #   db_option_group_name = "postresql-option-group"
 #   description          = "postgresql-option-group"
 #   major_engine_version = "14"
 #   # options              = []
 
-  subnet_group_name               = "postresql-subnet-group"
-  subnet_group_description        = "postresql-subnet-group"
-#   vpc_id                          = module.networking.vpc_id
-#   subnet_ids                      = [module.networking.private_subnets[2], module.networking.private_subnets[3]]
+  # subnet_group_name               = "postresql-subnet-group"
+  # subnet_group_description        = "postresql-subnet-group"
+  # vpc_id                          = module.networking.vpc_id
+  # subnet_ids                      = [module.networking.private_subnets[2], module.networking.private_subnets[3]]
 #   enabled_cloudwatch_logs_exports = ["upgrade"]
 #   rds_inbound = [
 #     {
@@ -78,8 +78,8 @@ module "db" {
   publicly_accessible   = var.publicly_accessible
   deletion_protection   = var.deletion_protection
 
-  tags = {
-    "env" = var.env
+   tags = {
+    "env" = "${var.env}"
   }
 
   db_option_group_name = "postresql-option-group"
@@ -89,8 +89,8 @@ module "db" {
 
   subnet_group_name               = "postresql-subnet-group"
   subnet_group_description        = "postresql-subnet-group"
-  # vpc_id                          = data.aws_vpc.default.id
-  # subnet_ids                      = data.aws_subnet_ids.default.ids
+  vpc_id                          = module.networking.vpc_id
+  subnet_ids                      = [module.networking.private_subnets[2], module.networking.private_subnets[3]]
   enabled_cloudwatch_logs_exports = ["upgrade"]
   rds_inbound = [
     {
@@ -116,17 +116,4 @@ module "db" {
   }
 }
 
-# data "aws_vpc" "default" {
-#   default = true
-# }
-
-# data "aws_subnet_ids" "default" {
-#   vpc_id = data.aws_vpc.default.id
-# }
-
-# provider "kubernetes" {
-#   host                   = var.kubernetes_host
-#   cluster_ca_certificate = var.kubernetes_cluster_ca_certificate
-#   token                  = var.kubernetes_token
-# }
 
