@@ -153,13 +153,3 @@ variable "deletion_protection" {
   type    = bool
   default = false
 }
-
-variable "env" {
-  type    = string
-  default = "dev"
-}
-
-variable "security_group_tag" {
-  type    = string
-  default = "my-security-group"
-}
