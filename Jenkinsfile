@@ -19,7 +19,7 @@ pipeline {
                 sh 'terraform init'
             }
         }
-        stage('terraform apply') {
+        stage('terraform plan') {
             steps{
                 sh 'ls -la'
                 sh 'cd ./AWS/envs/'
