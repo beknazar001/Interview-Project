@@ -14,14 +14,17 @@ pipeline {
         }
         stage('terraform Init') {
             steps{
+                sh 'ls -la'
                 sh 'cd ./AWS/envs/'
                 sh 'terraform init'
             }
         }
         stage('terraform apply') {
             steps{
+                sh 'ls -la'
                 sh 'cd ./AWS/envs/'
-                sh 'terraform plan  -var-file=\'/vars/dev.tfvars\' '
+                sh 'ls -ls'
+                sh 'terraform plan  -var-file=\'./vars/dev.tfvars\' '
             }
         }
     }
