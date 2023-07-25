@@ -1,5 +1,6 @@
 module "networking" {
-  source                      = "git::https://github.com/beknazar001/vpc_child_module.git"
+  # source                      = "git::https://github.com/beknazar001/vpc_child_module.git"
+  source="../modules/network"
   vpc_cidr_block              = var.vpc_cidr
   max_subnets                 = var.max_subnets
   public_cidrs                = var.public_cidrs

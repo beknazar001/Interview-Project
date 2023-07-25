@@ -6,7 +6,8 @@ provider "kubernetes" {
 }
 
 module "db" {
-  source                = "git::https://github.com/beknazar001/rds-child-module.git"
+  # source                = "git::https://github.com/beknazar001/rds-child-module.git"
+  source="../modules/rds"
   identifier            = var.identifier
   engine                = var.engine
   engine_version        = var.engine_version
