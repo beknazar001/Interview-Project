@@ -23,8 +23,8 @@ pipeline {
             steps{
                 sh 'ls -la'
                 sh 'cd ./AWS/envs/'
-                sh 'ls -ls'
-                sh 'terraform plan  -var-file=\'./vars/dev.tfvars\' '
+                sh 'ls -la'
+                sh 'terraform plan  -var-file=./vars/dev.tfvars'
             }
         }
     }
