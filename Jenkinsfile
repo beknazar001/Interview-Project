@@ -14,9 +14,11 @@ pipeline {
         }
         stage('terraform Init') {
             steps{
-                sh '''ls -la
-                cd ./AWS/envs/
-                terraform init'''
+                withCredentials([usernamePassword(credentialsId: 'nurbolot01', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+  sh "git config --global credential.helper '!f() { sleep 1; echo \"username=${env.GIT_USER}\\npassword=${env.GIT_PASS}\"; }; f'"
+  sh 'terraform init -input=false -upgrade'
+  sh 'git config --global --remove-section credential'
+}
             }
         }
         stage('terraform plan') {
