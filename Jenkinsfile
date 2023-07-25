@@ -21,7 +21,7 @@ pipeline {
         stage('terraform apply') {
             steps{
                 sh 'cd ./AWS/envs/'
-                sh 'terraform plan  -var-file=\'/vars/dev.tfvars\' '
+                sh 'terraform plan  -var-file=\'/vars/stage.tfvars\' '
             }
         }
     }
