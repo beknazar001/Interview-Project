@@ -7,17 +7,20 @@ pipeline {
 
         stage('terraform format check') {
             steps{
+                sh 'cd /AWS/envs/'
                 sh 'terraform fmt'
             }
         }
         stage('terraform Init') {
             steps{
+                sh 'cd /AWS/envs/'
                 sh 'terraform init'
             }
         }
         stage('terraform apply') {
             steps{
-                sh 'terraform plan --auto-approve'
+                sh 'cd /AWS/envs/'
+                sh 'terraform plan --auto-approve -var-file=\'vars/dev.tfvars\' '
             }
         }
     }
