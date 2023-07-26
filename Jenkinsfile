@@ -60,18 +60,18 @@
             }
             
             steps {
-                sh 'ls -la cd ./AWS/envs/'
-                sh 'terraform init -input=false'
+                sh '''ls -la
+                cd ./AWS/envs/
+                 terraform init'''
                 sh 'terraform workspace select ${environment} || terraform workspace new ${environment}'
-                sh 'terraform plan  -var-file=./vars/dev.tfvars'
             }
         }
             
             steps {
                 sh '''ls -la
                 cd ./AWS/envs/
-                terraform apply'''
-                sh "terraform plan  -var-file=./vars/dev.tfvars"
+                terraform plan'''
+                sh 'terraform plan  -var-file=./vars/dev.tfvars'
             }
         }
         
@@ -80,7 +80,7 @@
             sh '''ls -la
                 cd ./AWS/envs/
                 terraform destroy'''
-             sh "terraform destroy --auto-approve"
+             sh 'terraform destroy --auto-approve'
         }
     }
 
