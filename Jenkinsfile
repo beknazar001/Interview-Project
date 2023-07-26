@@ -71,12 +71,8 @@
                 sh 'ls -la cd ./AWS/envs/'
                 sh 'terraform init -input=false'
                 sh 'terraform workspace select ${environment} || terraform workspace new ${environment}'
-                sh 'ls -la
-                cd ./AWS/envs/
-                ls -la
-                terraform plan  -var-file=./vars/dev.tfvar'
                 sh "terraform plan -input=false -out tfplan "
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+                sh 'terraform plan  -var-file=./vars/dev.tfvars'
             }
         }
         stage('Approval') {
