@@ -1,8 +1,9 @@
-pipeline {
+
+ pipeline {
     agent any
 
     parameters {
-        string(name: 'environment', defaultValue: 'terraform', description: 'Workspace/environment file to use for deployment')
+      
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         booleanParam(name: 'destroy', defaultValue: false, description: 'Destroy Terraform build?')
 
@@ -12,8 +13,6 @@ pipeline {
      environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        // TF_VAR_aws_access_key = credentials('AWS_ACCESS_KEY_ID')
-        // TF_VAR_aws_secret_key = credentials('AWS_SECRET_ACCESS_KEY')
     }
 
 
@@ -28,12 +27,12 @@ pipeline {
             
             steps {
                 sh '''
-                cd ./AWS/envs/
-                terraform init 
-                terraform workspace select ${environment} || terraform workspace new ${environment}'''
-
-                sh "terraform plan -input=false -out tfplan "
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+                 cd ./AWS/envs/
+                 terraform init -input=false
+                 terraform plan -input=false -out tfplan -var-file=./vars/dev.tfvars
+                 terraform show -no-color tfplan > tfplan.txt
+             '''
+                
             }
         }
         stage('Approval') {
@@ -51,7 +50,7 @@ pipeline {
 
            steps {
                script {
-                    def plan = readFile 'tfplan.txt'
+                   
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                }
@@ -82,3 +81,9 @@ pipeline {
 
   }
 }
+    
+
+
+
+    
+
