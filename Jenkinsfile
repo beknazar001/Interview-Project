@@ -26,9 +26,9 @@
             }
             
             steps {
-                sh '''cd ./AWS/envs/
-                 terraform init -input=false
-                terraform workspace select ${environment} || terraform workspace new ${environment}'''
+                sh ''cd ./AWS/envs/
+                 terraform init -input=false''
+                
        
                 sh '''terraform plan -input=false -out tfplan
                 terraform show -no-color tfplan > tfplan.txt
