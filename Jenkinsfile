@@ -63,7 +63,7 @@
                 sh '''ls -la
                 cd ./AWS/envs/
                  terraform init'''
-                sh 'terraform workspace select ${environment} || terraform workspace new ${environment}'
+                sh '${environment}'
             }
         }
             
