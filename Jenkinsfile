@@ -1,35 +1,32 @@
 
-    pipeline 
-
-    agent any{
-
-
-     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+  pipeline {
+    agent any
+    tools {
+       terraform 'terraform'
     }
-            
-            steps {
+    stages {
+
+        stage('terraform format check') {
+            steps{
+                sh '''ls -la
+                 cd ./AWS/envs/
+                 terraform fmt'''
+            }
+        }
+        stage('terraform Init') {
+            steps{
                 sh '''ls -la
                 cd ./AWS/envs/
-                 terraform init'''
-                sh '${environment}'
+                terraform init'''
             }
-        
-            
-            steps {
+        }
+        stage('terraform plan') {
+            steps{
                 sh '''ls -la
                 cd ./AWS/envs/
-                terraform plan'''
-                sh 'terraform plan  -var-file=./vars/dev.tfvars'
+                ls -la
+                terraform plan  -var-file=./vars/dev.tfvars'''
             }
-        
-        
-         steps {
-            sh '''ls -la
-                cd ./AWS/envs/
-                terraform destroy'''
-             sh 'terraform destroy --auto-approve'
         }
     }
     
