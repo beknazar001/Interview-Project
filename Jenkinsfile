@@ -10,10 +10,10 @@ pipeline {
 
 
      environment {
-        // AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        // AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        TF_VAR_aws_access_key = credentials('AWS_ACCESS_KEY_ID')
-        TF_VAR_aws_secret_key = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        // TF_VAR_aws_access_key = credentials('AWS_ACCESS_KEY_ID')
+        // TF_VAR_aws_secret_key = credentials('AWS_SECRET_ACCESS_KEY')
     }
 
 
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 sh '''
                 cd ./AWS/envs/
-                terraform init -input=false
+                terraform init 
                 terraform workspace select ${environment} || terraform workspace new ${environment}'''
 
                 sh "terraform plan -input=false -out tfplan "
