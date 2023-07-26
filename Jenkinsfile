@@ -29,7 +29,7 @@ pipeline {
             steps {
                 sh '''
                 cd ./AWS/envs/
-                terraform init -input=false
+                // terraform init -input=false
                 terraform workspace select ${environment} || terraform workspace new ${environment}'''
 
                 sh "terraform plan -input=false -out tfplan "
