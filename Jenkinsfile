@@ -26,8 +26,8 @@
             }
             
             steps {
-                sh ''cd ./AWS/envs/
-                 terraform init -input=false''
+                sh '''cd ./AWS/envs/
+                 terraform init -input=false'''
                 
        
                 sh '''terraform plan -input=false -out tfplan
