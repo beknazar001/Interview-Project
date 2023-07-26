@@ -1,6 +1,7 @@
 
-    pipeline {
-    agent any
+    pipeline 
+
+    agent any{
 
     parameters {
         string(name: 'environment', defaultValue: 'terraform', description: 'Workspace/environment file to use for deployment')
@@ -33,7 +34,7 @@
                  terraform init'''
                 sh '${environment}'
             }
-        }
+        
             
             steps {
                 sh '''ls -la
@@ -41,7 +42,6 @@
                 terraform plan'''
                 sh 'terraform plan  -var-file=./vars/dev.tfvars'
             }
-        }
         
         
          steps {
@@ -51,6 +51,7 @@
              sh 'terraform destroy --auto-approve'
         }
     }
+    
 
 
 
