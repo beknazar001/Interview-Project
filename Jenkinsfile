@@ -26,12 +26,12 @@
             }
             
             steps {
-                sh '''cd ./AWS/envs/
-                 terraform init -input=false'''
-                
-       
-                sh '''terraform plan -input=false -out tfplan -var-file=./vars/dev.tfvars
-                terraform show -no-color tfplan > tfplan.txt'''
+                sh '''
+                 cd ./AWS/envs/
+                 terraform init -input=false
+                 terraform plan -input=false -out tfplan -var-file=./vars/dev.tfvars
+                 terraform show -no-color tfplan > tfplan.txt
+             '''
                 
             }
         }
