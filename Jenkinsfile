@@ -51,8 +51,7 @@
     stages {
         stage('checkout') {
             steps {
-                 script{
-                        dir("terraform")
+                 
                         {
                             git "https://github.com/beknazar001/Interview-Project.git"
                         }
