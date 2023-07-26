@@ -26,7 +26,7 @@
             }
             
             steps {
-                sh 'cd ./AWS/envs/'
+                sh 'cd ./AWS/envs/vars/'
                 sh 'terraform init -input=false'
                 sh 'terraform workspace select ${environment} || terraform workspace new ${environment}'
        
