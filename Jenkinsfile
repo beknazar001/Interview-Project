@@ -103,6 +103,9 @@
             }
             
             steps {
+                sh '''ls -la
+                cd ./AWS/envs/
+                terraform apply'''
                 sh "terraform apply -input=false tfplan"
             }
         }
@@ -114,6 +117,9 @@
         
         steps {
            sh "terraform destroy --auto-approve"
+            sh '''ls -la
+                cd ./AWS/envs/
+                terraform destroy'''
         }
     }
 
