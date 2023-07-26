@@ -24,7 +24,6 @@
             steps{
                 sh '''ls -la
                 cd ./AWS/envs/
-                ls -la
                 terraform plan  -var-file=./vars/dev.tfvars'''
             }
         }
