@@ -30,9 +30,9 @@
                  terraform init -input=false'''
                 
        
-                sh '''terraform plan -input=false -out tfplan
-                terraform show -no-color tfplan > tfplan.txt
-                terraform plan  -var-file=./vars/dev.tfvars'''
+                sh '''terraform plan -input=false -out tfplan -var-file=./vars/dev.tfvars
+                terraform show -no-color tfplan > tfplan.txt'''
+                
             }
         }
         stage('Approval') {
