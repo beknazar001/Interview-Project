@@ -3,7 +3,7 @@
     agent any
 
     parameters {
-        string(name: 'environment', defaultValue: 'terraform', description: 'Workspace/environment file to use for deployment')
+        string(name: 'environment')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         booleanParam(name: 'destroy', defaultValue: false, description: 'Destroy Terraform build?')
 
