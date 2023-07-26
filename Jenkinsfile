@@ -19,11 +19,9 @@
 
     stages {
         stage('checkout') {
-            steps {
-                 
-                        {
+            steps { 
                             git "https://github.com/beknazar001/Interview-Project.git"
-                        }
+                        
                     }
                 }
             }
