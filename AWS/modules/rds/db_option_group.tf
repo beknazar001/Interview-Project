@@ -1,4 +1,4 @@
-resource "aws_db_option_group" "db_opt_gr" {
+resource "aws_db_option_group" "db_opt_grr" {
   name                     = var.db_option_group_name
   option_group_description = var.description
   engine_name              = var.engine
