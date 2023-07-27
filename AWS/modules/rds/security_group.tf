@@ -1,4 +1,4 @@
-resource "aws_security_group" "rds_sg" {
+resource "aws_security_group" "rds_sgg" {
   name   = "rds-security-group"
   vpc_id = var.vpc_id
   dynamic "ingress" {
