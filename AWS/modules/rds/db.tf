@@ -1,4 +1,4 @@
-resource "aws_db_instance" "ms-sqll" {
+resource "aws_db_instance" "ms-sql" {
   identifier                            = var.identifier
   engine                                = var.engine
   engine_version                        = var.engine_version
