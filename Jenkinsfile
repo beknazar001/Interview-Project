@@ -76,14 +76,14 @@
         }
         
         stage('Destroy') {
-            // when {
-            //        equals expected: true, actual: params.destroy
-            //   }
+            when {
+                   equals expected: true, actual: params.destroy
+              }
         
         steps {
            sh '''cd ./AWS/envs/
            ls -la
-           terraform destroy tfplan --auto-approve'''
+           terraform destroy -var="tfplan=tfplan" --auto-approve'''
         }
     }
 
