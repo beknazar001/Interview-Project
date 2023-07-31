@@ -69,7 +69,8 @@
             }
             
             steps {
-                sh  "terraform apply tfplan"
+                sh  '''ls -la 
+                terraform apply tfplan'''
                
             }
         }
