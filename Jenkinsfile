@@ -8,7 +8,7 @@
       
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         booleanParam(name: 'destroy', defaultValue: false, description: 'Destroy Terraform build?')
-
+        string(name: 'tfVarFile', defaultValue: './vars/dev.tfvars', description: 'Terraform variable file path') 
     }
 
 
@@ -32,7 +32,7 @@
                  cd ./AWS/envs/
                  terraform init -input=false
                  ls -la
-                 terraform plan -input=false -out tfplan -var-file=./vars/dev.tfvars
+                 terraform plan -input=false -out -var-file=${params.tfVarFile}
                  ls -la
                  terraform show -no-color tfplan > tfplan.txt
              '''
@@ -89,7 +89,7 @@
         steps {
            sh '''cd ./AWS/envs/
            ls -la
-           terraform destroy -var-file=./vars/dev.tfvars --auto-approve'''
+           terraform destroy -var-file=${params.tfVarFile} --auto-approve'''
         }
     }
 
