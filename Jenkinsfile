@@ -69,7 +69,7 @@
             }
             
             steps {
-                sh  '''ls -la 
+                sh  '''cd ./AWS/envs/
                 terraform apply tfplan'''
                
             }
