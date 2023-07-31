@@ -83,7 +83,7 @@
         steps {
            sh '''cd ./AWS/envs/
            ls -la
-           terraform destroy -var="tfplan=tfplan" --auto-approve'''
+           terraform destroy -var-file=./vars/dev.tfvars --auto-approve'''
         }
     }
 
