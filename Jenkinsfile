@@ -39,19 +39,24 @@
                 
             }
         }
-        stage('Approval') 
-           when {
-               not {
-                   equals expected: true, actual: params.autoApprove
-               }
-               not {
-                   equals expected: true, actual: params.userApprove
-               }
-            
-               not {
-                    equals expected: true, actual: params.destroy
-                }
-           }
+       stage('Approval') {
+    when {
+        anyOf {
+            expression {
+                params.autoApprove != true ||
+                params.userApprove != true ||
+                params.destroy != true
+            }
+        }
+    }
+    steps {
+        script {
+            input message: "Do you want to apply the plan?",
+                  parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+        }
+    }
+}
+
            
                 
             
