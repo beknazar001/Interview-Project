@@ -31,7 +31,9 @@
                 sh '''
                  cd ./AWS/envs/
                  terraform init -input=false
+                 ls -la
                  terraform plan -input=false -out tfplan -var-file=./vars/dev.tfvars
+                 ls -la
                  terraform show -no-color tfplan > tfplan.txt
              '''
                 
