@@ -82,7 +82,7 @@
         
         steps {
            sh '''cd ./AWS/envs/
-           terraform destroy --auto-approve'''
+           terraform destroy tfplan --auto-approve'''
         }
     }
 
