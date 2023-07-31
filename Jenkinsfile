@@ -39,11 +39,15 @@
                 
             }
         }
-        stage('Approval') {
+        stage('Approval') 
            when {
                not {
                    equals expected: true, actual: params.autoApprove
                }
+               not {
+                   equals expected: true, actual: params.userApprove
+               }
+            
                not {
                     equals expected: true, actual: params.destroy
                 }
