@@ -77,7 +77,9 @@
         
         stage('Destroy') {
             when {
-                equals expected: true, actual: params.destroy
+                not{
+                   equals expected: true, actual: params.destroy
+               }
             }
         
         steps {
