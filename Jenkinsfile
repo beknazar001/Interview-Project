@@ -76,9 +76,9 @@
         }
         
         stage('Destroy') {
-            when {
-                   equals expected: true, actual: params.destroy
-              }
+            // when {
+            //        equals expected: true, actual: params.destroy
+            //   }
         
         steps {
            sh '''cd ./AWS/envs/
