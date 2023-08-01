@@ -30,7 +30,7 @@
             steps {
                 sh """
                  cd ./AWS/envs/
-                 terraform init -input=false
+                 terraform init 
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
                  ls -la
