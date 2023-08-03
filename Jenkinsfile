@@ -29,8 +29,18 @@
             
             steps {
                 sh """
-                 cd ./AWS/envs/
-                 terraform init -reconfigure 
+                 cd ./AWS/envs/ {
+            environment {
+                AWS_ACCESS_KEY_ID     = credentials('AKIAWLHLQVRVOMC73YNX')
+                AWS_SECRET_ACCESS_KEY = credentials('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')
+                TF_INPUT              = "false"
+            }
+            steps {
+                script {
+                 'terraform init -backend-config="interview-project-dev-bucket-1234" -input=false -force-copy'
+                }
+            }
+        }
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
                  ls -la
