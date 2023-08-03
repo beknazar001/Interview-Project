@@ -30,7 +30,7 @@
             steps {
                 sh """
                  cd ./AWS/envs/
-                 export TF_INPUT=false
+                 export TF_INPUT=true
                  terraform init -backend-config="bucket=interview-project-dev-bucket-12345" 
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
