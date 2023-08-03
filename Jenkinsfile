@@ -37,7 +37,7 @@
             }
             steps {
                 script {
-                 'terraform init -backend-config="interview-project-dev-bucket-1234" -input=false -force-copy'
+                 terraform init -backend-config="interview-project-dev-bucket-1234" -input=false -force-copy
                 }
             }
         }
