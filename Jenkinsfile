@@ -31,6 +31,7 @@
                 sh """
                  cd ./AWS/envs/
                  terraform init 
+                 aws s3 sync terraform.tfstate.backup s3://interview-project-dev-bucket-12345
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
                  ls -la
