@@ -1,7 +1,4 @@
-
-
-
- pipeline {
+pipeline {
     agent any
 
     parameters {
@@ -36,6 +33,7 @@
                  ls -la
                  terraform show -no-color tfplan > tfplan.txt
              """
+            }
         }
      stage('Approval') {
            when {
@@ -94,6 +92,7 @@
   }
 
  }
+
  
 
     
