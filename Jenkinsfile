@@ -30,13 +30,15 @@
             steps {
                 sh """
                  cd ./AWS/envs/ 
-                 terraform init 
+                 terraform init
+                 terraform state pull > terraform.tfstate.backup
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
                  ls -la
                  terraform show -no-color tfplan > tfplan.txt
              """
-                
+                script { 
+                 aws s3 cp terraform.tfstate.backup s3://interview-project-dev-bucket-1234/terraform.tfstate
             }
         }
      stage('Approval') {
