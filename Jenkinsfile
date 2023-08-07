@@ -83,9 +83,11 @@ pipeline {
               }
         
         steps {
-           sh '''cd ./AWS/envs/
+           sh """ 
+           cd ./AWS/envs/
            ls -la
-           terraform destroy -var-file=${params.tfVarFile} --auto-approve'''
+           terraform destroy -var-file=${params.tfVarFile} --auto-approve
+           """
         }
     }
 
