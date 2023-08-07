@@ -30,7 +30,7 @@
             steps {
                 sh """
                  cd ./AWS/envs/ 
-                 terraform init
+                 terraform init -migrate-state
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
                  ls -la
