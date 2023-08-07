@@ -4,5 +4,7 @@
   key    = "terraform.tfstate"
  region = "us-east-1"
  dynamodb_table = "mydbtable"
+ # Automatically copy the existing state to the new backend
+    migrate = true
 }
 }
