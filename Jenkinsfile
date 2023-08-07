@@ -38,7 +38,7 @@
                  terraform show -no-color tfplan > tfplan.txt
              """
                 script { 
-                 aws s3 cp terraform.tfstate.backup s3://interview-project-dev-bucket-1234/terraform.tfstate
+                 aws s3 cp terraform.tfstate.backup s3 //interview-project-dev-bucket-1234/terraform.tfstate
             }
         }
      stage('Approval') {
