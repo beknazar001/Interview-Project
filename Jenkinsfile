@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh """
                  cd ./AWS/envs/ 
-                 terraform init
+                 terraform init -force-copy
                  ls -la
                  terraform plan -input=false -out tfplan -var-file=${params.tfVarFile}
                  ls -la
